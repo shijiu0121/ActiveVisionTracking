@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 面向遮挡与通信时延的主动视觉跟踪系统
 
 **首版是视觉跟踪算法、短时预测与STM32中文监控/虚拟控制显示。无真实电机控制。** 硬件仅使用ATK-DNF103P V4.7战舰底板、ATK-MD0700 V2.4、ST-LINK、Windows PC。
@@ -32,3 +33,6 @@ powershell -ExecutionPolicy Bypass -File tools\build.ps1 -Config Debug
 [构建与用户烧录](docs/BUILD_AND_FLASH.md) · [5分钟演示](docs/DEMO_GUIDE.md) · [协议](docs/PROTOCOL.md)
 
 新增实现没有复制未知许可的第三方LCD驱动或全量字体。已有ST HAL/CMSIS保留原版权与许可；中文点阵由本机已安装字体渲染界面所需字符，仅为本项目生成，不包含完整字体文件。厂商资料链接与适用版本在LCD文档中列明。
+=======
+STM32学习项目
+>>>>>>> 22ebd49f0f79a534298dbfbc38f11aac47209968
