@@ -43,15 +43,28 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Add sources to executable
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user sources here
-     Core/Src/led.c
-     Core/Src/key.c
+
+# 用户源码只放在 User/Src，避免重复编译 CubeMX 管理的 Core 和 Drivers。
+# Ninja 每次构建检查此目录；新增/删除 .c 后自动重新配置，无须逐个登记。
+file(GLOB USER_SOURCES CONFIGURE_DEPENDS LIST_DIRECTORIES false
+    "${CMAKE_CURRENT_SOURCE_DIR}/User/Src/*.c"
 )
+
+# 将这些文件加入 STM32 固件编译
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${USER_SOURCES}
+)
+set_source_files_properties(${USER_SOURCES} PROPERTIES COMPILE_OPTIONS "-Wextra;-Werror")
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${CMAKE_CURRENT_BINARY_DIR}/ActiveVisionTracking.bin
+    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${CMAKE_CURRENT_BINARY_DIR}/ActiveVisionTracking.hex
+    COMMENT "Export BIN and HEX (no flashing)"
+)
+
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+    "${CMAKE_CURRENT_SOURCE_DIR}/User/Inc"
 )
 
 # Add project symbols (macros)

@@ -18,11 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "led.h"
-#include "key.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "key.h"
+#include "app.h"
+#include "avt_runtime.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,8 +62,7 @@ static void MX_GPIO_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
+int main(void) {
 
   /* USER CODE BEGIN 1 */
 
@@ -89,26 +88,23 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   KEY0_Init();
-  LED_Off();
+  AVT_Init();
+  App_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    /* USER CODE BEGIN 3 */
-  
-    if (KEY0_GetPressEvent())
-    {
-        LED_Toggle();
-    }
-
+    App_HandleKeyEvent(KEY0_GetEvent());
+    App_Update();
+    AVT_Task();
+  }
   /* USER CODE END 3 */
 }
-}
+
 /**
   * @brief System Clock Configuration
   * @retval None
